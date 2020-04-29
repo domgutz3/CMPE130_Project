@@ -1,1 +1,2 @@
-Username, Password, 0 (checking balance), 0 (savings balance), Account Number
+Dominic pswrd 2800 100
+tester pass 0 0

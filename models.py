@@ -8,7 +8,7 @@ class Account(User):
         User.__init__(self, name, password)
         self.checking_balance = 0
         self.savings_balance = 0
-        
+    
 
     def deposit(self, type, amount):
         if type == 'checking':
