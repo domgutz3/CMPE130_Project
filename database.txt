@@ -1,0 +1,1 @@
+Username, Password, 0 (checking balance), 0 (savings balance), Account Number
