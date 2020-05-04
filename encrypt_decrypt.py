@@ -1,4 +1,9 @@
-    
+########################################################
+# encrypt()
+# stream cipher: takes a line at a time and encrypts it 
+# return the encrypted string 
+# ###################################################### 
+  
 def encrypt(account):
     encryptAcct = ''
     firstKey = {'a': '/', 'b':'@', 'c':'T','d':'r', 'e':'$','f':'D','g':'s',
@@ -16,7 +21,12 @@ def encrypt(account):
 
 
     return encryptAcct
-                
+
+####################################################
+# decrypt()
+# decrypts line at a time
+# returns the original string
+####################################################              
     
 def decrypt(account):
     decryptStr = ''
@@ -32,9 +42,9 @@ def decrypt(account):
         decryptStr = decryptStr + decryptKey1.get(line, '')
         decryptStr = decryptStr + decryptKey2.get(line, '')
                 
-    print(decryptStr)
+    return = decryptStr
     
-string = "This is the string"
+#string = "This is the string"
        
-output = encrypt(string)
-decrypt(output)
+#output = encrypt(string)
+#decrypt(output)
