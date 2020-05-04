@@ -15,7 +15,7 @@ def encrypt(account):
                          'U':'o','V':'q','W':'.','X':'O','Y':'p','Z':'G','5':'U','6':'i','7':'k','8':'K','9':']'}
 
     
-    for line in account:
+    for line in str(account):
         encryptAcct = encryptAcct + firstKey.get(line, ' ')
         encryptAcct = encryptAcct + secondKey.get(line, ' ')
 
@@ -38,13 +38,9 @@ def decrypt(account):
                          'F':'x','4':'y','{':'z','L':'N','J':'O','C':'P','g':'Q','P':'R',';':'S','>':'T',
                          'o':'U','q':'V','.':'W','O':'X','p':'Y','G':'Z','U':'5','i':'6','k':'7','K':'8',']':'9'}
         
-    for line in account:
+    for line in str(account):
         decryptStr = decryptStr + decryptKey1.get(line, '')
         decryptStr = decryptStr + decryptKey2.get(line, '')
                 
-    return = decryptStr
-    
-#string = "This is the string"
-       
-#output = encrypt(string)
-#decrypt(output)
+    return decryptStr
+

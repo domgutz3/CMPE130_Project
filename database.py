@@ -17,9 +17,7 @@ def hashFunction(username, password):
 
 ####################################################################
 # upload():
-# uploads the database into a hash table. The value returned from 
-# hash table is modded with the length of the database. 
-# linear probing is used to prevent collisions
+# uploads data from file.txt
 ####################################################################
     
 def upload():
@@ -29,12 +27,24 @@ def upload():
 
     while line != '':
         name, username, passwd, checking = line.split()
-        num =  hashFunction(username, passwd)
 
+        insert(name, username, passwd, checking)
+
+        line = file.readline()
+
+    file.close()
+  ################################################
+  # insert()
+  # inserts a user with their information inside 
+  # the database
+  ################################################    
+
+def insert(name, username, passwd, checking):
+
+        num =  hashFunction(username, passwd)
         key = num % len(Database)
 
         j = 1
-
         for i,v in enumerate(Database):
             while(key == i and v != 0):
                  key = (num + j) % len(Database)
@@ -42,9 +52,6 @@ def upload():
                  
             if(key == i and v == 0):
                 Database[key] = models.Account(name, username, passwd, checking, 0)
-
-        line = file.readline()
-    file.close()
 
 upload()
 

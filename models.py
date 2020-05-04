@@ -22,11 +22,11 @@ class Account(User):
 
     def deposit(self, type, amount):
         if type == 'checking':
-            self.checking_balance = encrypt_decrypt.decrypt(self.checking_balance)
+            self.checking_balance = int(encrypt_decrypt.decrypt(self.checking_balance))
             self.checking_balance = self.checking_balance + amount
             self.checking_balance = encrypt_decrypt.encrypt(self.checking_balance)
         elif type == 'savings':
-            self.checking_balance = encrypt_decrypt.decrypt(self.checking_balance)
+            self.checking_balance = int(encrypt_decrypt.decrypt(self.checking_balance))
             self.savings_balance = self.savings_balance + amount
             self.checking_balance = encrypt_decrypt.encrypt(self.checking_balance)
         else:
@@ -34,7 +34,7 @@ class Account(User):
 
     def withdraw(self, type, amount):
         if type == 'checking':
-            self.checking_balance = encrypt_decrypt.decrypt(self.checking_balance)
+            self.checking_balance = int(encrypt_decrypt.decrypt(self.checking_balance))
 
             if amount > self.checking_balance:
                 print('Insufficient Funds in Checking Account')
@@ -44,7 +44,7 @@ class Account(User):
 
             self.checking_balance = encrypt_decrypt.encrypt(self.checking_balance)
         elif type == 'savings':
-            self.savings_balance = encrypt_decrypt.decrypt(self.savings_balance)
+            self.savings_balance = int(encrypt_decrypt.decrypt(self.savings_balance))
 
             if amount > self.savings_balance:
                 print('Insufficient Funds in Savings Account')
