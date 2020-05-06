@@ -73,9 +73,14 @@ def insert(name, username, passwd, checking, savings=0):
 
 ####################################################################
 # delete()
-#
+# deletes user object and frees space in Database.
 ####################################################################
-def delete():
+def delete(user,key):
+
+    del user
+    Database[key] = 0
+
+    overwrite()
 
 ####################################################################
 #
@@ -90,6 +95,7 @@ def search():
 # option is return 
 ###################################################################             
 def menu():
+
     print(" MENU ")
     print("------")
     print("1. Login")
@@ -136,7 +142,7 @@ def main():
             password = input("Password: ")
 
             key = hashFunction(username, password)
-            user = search(key)                          #not sure about this 
+            user = search(username, key)                           
 
             option = transactions()
 
@@ -153,7 +159,7 @@ def main():
                         if(a_type == 'savings'):
                             valid_type = True
 
-                        user.models.deposit(a_type, deposit)
+                        user.deposit(a_type, deposit)
                         
 
                 elif(option == 2):
@@ -168,9 +174,12 @@ def main():
                         if(a_type == 'savings'):
                             valid_type = True
 
-                        user.models.withdraw(a_type, withdraw)
+                        user.withdraw(a_type, withdraw)
+
                 elif(option == 3):
-                    delete(user) 
+
+                    delete(user, key) 
+
                 else:
 
                     valid_type = False
@@ -183,7 +192,7 @@ def main():
                         if(a_type == 'savings'):
                             valid_type = True
 
-                        user.models.view_balance(a_type)
+                        user.view_balance(a_type)
 
                 option = transactions()
             
