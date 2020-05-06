@@ -56,11 +56,24 @@ def insert(name, username, passwd, checking):
             if(key == i and v == 0):
                 Database[key] = models.Account(name, username, passwd, checking, 0)
 
- ##################################################################
- # menu()
- # outputs a menu for the user to chose from 
- # option is return 
- # ################################################################               
+####################################################################
+# delete()
+#
+####################################################################
+def delete():
+
+####################################################################
+#
+#
+####################################################################
+
+def search():
+
+###################################################################
+# menu()
+# outputs a menu for the user to chose from 
+# option is return 
+###################################################################             
 def menu():
     print(" MENU ")
     print("------")
@@ -90,13 +103,14 @@ def transactions():
     option = input("Enter an option: ")
 
     return option
-    
+
 ####################################################################
 # main()
 # beginning of the program
 ####################################################################
 
 def main():
+
     upload()
 
     option = menu() 
@@ -152,7 +166,7 @@ def main():
             insert(name, username, password, checking)
             print("Your account has been created. ")
 
-            menu()
+        menu()
 
 
 
