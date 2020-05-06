@@ -30,11 +30,26 @@ def upload():
     line = file.readline()
 
     while line != '':
-        name, username, passwd, checking = line.split()
+        name, username, passwd, checking, savings = line.split()
 
-        insert(name, username, passwd, checking)
+        insert(name, username, passwd, checking, savings)
 
         line = file.readline()
+
+    file.close()
+
+####################################################################
+# overwrite():
+# overwrites file.txt with the information in the new database
+# use after insert(), but not in it (since insert() is used in upload())
+####################################################################
+
+def overwrite():
+
+    file = open('database.txt', 'w')
+
+    for account in Database:
+        file.write('{} {} {} {} {}\n'.format(account.name, account.username, account.password_hash, account.checking_balance, account.savings_balance))
 
     file.close()
 
@@ -44,7 +59,7 @@ def upload():
   # the database
   #################################################################    
 
-def insert(name, username, passwd, checking):
+def insert(name, username, passwd, checking, savings=0):
         key =  hashFunction(username, passwd)
 
         j = 1
@@ -54,7 +69,7 @@ def insert(name, username, passwd, checking):
                  j = j + 1
                  
             if(key == i and v == 0):
-                Database[key] = models.Account(name, username, passwd, checking, 0)
+                Database[key] = models.Account(name, username, passwd, checking, savings)
 
 ####################################################################
 # delete()
@@ -127,16 +142,48 @@ def main():
 
             while(option < 5):
                 if(option == 1):
-                    deposit = input("Enter amount to deposit: ")
-                    user.models.deposit(deposit)
+
+                    valid_type = False
+                    while(valid_type == False):
+                        a_type = input("Deposit to checking or savings? ")
+                        deposit = input("Enter amount to deposit: ")
+
+                        if(a_type == 'checking'):
+                            valid_type = True
+                        if(a_type == 'savings'):
+                            valid_type = True
+
+                        user.models.deposit(a_type, deposit)
+                        
 
                 elif(option == 2):
-                    withdraw = input("Enter amount to withdraw: ")
-                    user.models.withdraw(withdraw)
+
+                    valid_type = False
+                    while(valid_type == False):
+                        a_type = input("Withdraw from checking or savings? ")
+                        withdraw = input("Enter amount to withdraw: ")
+
+                        if(a_type == 'checking'):
+                            valid_type = True
+                        if(a_type == 'savings'):
+                            valid_type = True
+
+                        user.models.withdraw(a_type, withdraw)
                 elif(option == 3):
                     delete(user) 
                 else:
-                    user.models.view_balance()
+
+                    valid_type = False
+                    while(valid_type == False):
+
+                        a_type = input("View checking or savings? ")
+
+                        if(a_type == 'checking'):
+                            valid_type = True
+                        if(a_type == 'savings'):
+                            valid_type = True
+
+                        user.models.view_balance(a_type)
 
                 option = transactions()
             
@@ -164,6 +211,8 @@ def main():
             checking = input("Deposit: ")
 
             insert(name, username, password, checking)
+            overwrite()
+
             print("Your account has been created. ")
 
         menu()
