@@ -53,23 +53,23 @@ class Account(User):
 
     def deposit(self, type, amount):
         if type == 'checking':
-            self.checking_balance = float(encrypt_decrypt.decrypt(self.checking_balance))
-            self.checking_balance = self.checking_balance + amount
+            self.checking_balance = encrypt_decrypt.decrypt(self.checking_balance)
+            self.checking_balance = float(self.checking_balance) + float(amount)
             self.checking_balance = encrypt_decrypt.encrypt(self.checking_balance)
 
         elif type == 'savings':
-            self.checking_balance = float(encrypt_decrypt.decrypt(self.checking_balance))
-            self.savings_balance = self.savings_balance + amount
-            self.checking_balance = encrypt_decrypt.encrypt(self.checking_balance)
+            self.savings_balance = encrypt_decrypt.decrypt(self.savings_balance)
+            self.savings_balance = float(self.savings_balance) + float(amount)
+            self.savings_balance = encrypt_decrypt.encrypt(self.savings_balance)
 
         else:
             print('Invalid Balance Type')
 
     def withdraw(self, type, amount):
         if type == 'checking':
-            self.checking_balance = float(encrypt_decrypt.decrypt(self.checking_balance))
+            self.checking_balance = encrypt_decrypt.decrypt(self.checking_balance)
 
-            if amount > self.checking_balance:
+            if float(amount) > float(self.checking_balance):
                 print('Insufficient Funds in Checking Account')
             else:
                 self.checking_balance = self.checking_balance - amount
@@ -78,9 +78,9 @@ class Account(User):
             self.checking_balance = encrypt_decrypt.encrypt(self.checking_balance)
 
         elif type == 'savings':
-            self.savings_balance = float(encrypt_decrypt.decrypt(self.savings_balance))
+            self.savings_balance = encrypt_decrypt.decrypt(self.savings_balance)
 
-            if amount > self.savings_balance:
+            if float(amount) > float(self.savings_balance):
                 print('Insufficient Funds in Savings Account')
             else:
                 self.savings_balance = self.savings_balance - amount
