@@ -88,7 +88,18 @@ def delete(user,key): #tested
 #
 ####################################################################
 
-def search():
+def search(username, key):
+    for k,b in enumerate(Database):
+        if key == k:
+            if username == b.getUsername():
+                return k
+            else:
+                for k,b in enumerate(Database):             # -> while(k < len(Database))
+                    if(username == b.getUsername()):        # -> Database[k].getUsername()
+                        return k
+                    elif(k == len(Database) - 1) and username != b.getUsername():
+                        k = 0
+
 
 ###################################################################
 # menu()
