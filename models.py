@@ -1,5 +1,6 @@
 import encrypt_decrypt
 
+#tested all functions 
 class User:
     def __init__(self, name, username, password):
         self.user = name

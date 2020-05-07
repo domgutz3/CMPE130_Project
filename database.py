@@ -66,7 +66,7 @@ def insert(name, username, passwd, checking, savings=0):
 
         for i,v in enumerate(Database):
             while(key == i and v != 0):
-                 key = (num + j) % len(Database)
+                 key = (key + j) % len(Database)
                  j = j + 1
                  
             if(key == i and v == 0):

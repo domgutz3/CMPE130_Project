@@ -3,6 +3,37 @@ import database
 
 Database = [0 for i in range(3)]
 
+# def insert(name, username, passwd, checking, savings=0): 
+#         key =  database.hashFunction(username, passwd)
+
+#         i = 0
+#         j = 1
+
+#         while (i < len(Database)):
+
+#             if(key == i and Database[i] == 0):
+#                 Database[key] = models.Account(name, username, passwd, checking, savings)
+#             else:
+#                 while (Database[i] != 0):
+#                     key = (key + j) % len(Database)
+#                     j = j + 1
+#                 Database[key] = models.Account(name, username, passwd, checking, savings)
+ 
+                
+def insert(name, username, passwd, checking, savings=0):
+    key =  database.hashFunction(username, passwd)
+
+    j = 1
+
+    for i,v in enumerate(Database):
+        while(key == i and v != 0):
+            key = (key + j) % len(Database)
+            j = j + 1
+                 
+            if(key == i and v == 0):
+                Database[key] = models.Account(name, username, passwd, checking, savings)  
+ 
+
 def delete(position):
     
     del Database[position]
@@ -14,13 +45,21 @@ def main():
     Database[1] = models.Account('Dominic Gutierrez', 'dom123', 'Liljoker3','350.00')
     Database[2] = models.Account('Kenneth Lu', 'ken454','2coo4u', '230.0')
 
-    position = int(input("Enter a position: "))
+    #position = int(input("Enter a position: "))
 
-    Database[position].printInfor()
+    insert('Ron Lencevicus', 'RonL546', 'Babycakes1', '324.0')
+
     print('\n')
-    delete(position)
+
+    for i in Database:
+        i.printInfor()
+        print('\n')
+
     #Database[position].printInfor()
-    print(Database[position])
+    #print('\n')
+    #delete(position)
+    #Database[position].printInfor()
+    #print(Database[position])
 
 main()
 
