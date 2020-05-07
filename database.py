@@ -1,8 +1,9 @@
 import models
+from encrypt_decrypt import encrypt, decrypt
 
 #delete, and search need to be created 
 
-Database = [0 for i in range(10)]
+Database = [models.Account('void', 'void', 'void', 0, 0) for i in range(10)]
 
 #####################################################################
 # hashfunction(): 
@@ -30,11 +31,12 @@ def upload(): #tested
     line = file.readline()
 
     while line != '':
-        name, username, passwd, checking, savings = line.split()
+        if line != '0':
+            name, username, passwd, checking, savings = line.split()
 
-        insert(name, username, passwd, checking, savings)
+            insert(name, decrypt(username), decrypt(passwd), decrypt(checking), decrypt(savings))
 
-        line = file.readline()
+            line = file.readline()
 
     file.close()
 
@@ -49,7 +51,7 @@ def overwrite():
     file = open('database.txt', 'w')
 
     for account in Database:
-        file.write('{} {} {} {} {}\n'.format(account.name, account.username, account.password_hash, account.checking_balance, account.savings_balance))
+        file.write('{} {} {} {} {}\n'.format(account.user, account.username, account.password_hash, account.checking_balance, account.savings_balance))
 
     file.close()
 
@@ -61,15 +63,14 @@ def overwrite():
 
 def insert(name, username, passwd, checking, savings=0):
         key =  hashFunction(username, passwd)
-
         j = 1
 
         for i,v in enumerate(Database):
-            while(key == i and v != 0):
-                 key = (num + j) % len(Database)
+            while(key == i and v.getUsername() != 'void'):
+                 key = (key + j) % len(Database)
                  j = j + 1
                  
-            if(key == i and v == 0):
+            if(key == i and v.getUsername() == 'void'):
                 Database[key] = models.Account(name, username, passwd, checking, savings)
 
 ####################################################################
@@ -79,7 +80,7 @@ def insert(name, username, passwd, checking, savings=0):
 def delete(user,key): #tested
 
     del Database[key]
-    Database[key] = 0
+    Database[key] = models.Account('void', 'void', 'void', 0, 0)
 
     overwrite()
 
@@ -88,17 +89,29 @@ def delete(user,key): #tested
 #
 ####################################################################
 
+# I was getting an error with this search function because it said b was an int instead of an Account object
+# def search(username, key):
+#     for k,b in enumerate(Database):
+#         if key == k:
+#             if username == b.getUsername():
+#                 return k
+#             else:
+#                 for k,b in enumerate(Database):             # -> while(k < len(Database))
+#                     if(username == b.getUsername()):        # -> Database[k].getUsername()
+#                         return k
+#                     elif(k == len(Database) - 1) and username != b.getUsername():
+#                         k = 0
+
 def search(username, key):
-    for k,b in enumerate(Database):
+    k = key
+    while username != Database[key].getUsername():
+        key = (key + 1) % len(Database)
         if key == k:
-            if username == b.getUsername():
-                return k
-            else:
-                for k,b in enumerate(Database):             # -> while(k < len(Database))
-                    if(username == b.getUsername()):        # -> Database[k].getUsername()
-                        return k
-                    elif(k == len(Database) - 1) and username != b.getUsername():
-                        k = 0
+            # user not found
+            return -1
+    return key
+            
+
 
 
 ###################################################################
@@ -146,18 +159,27 @@ def transactions():
 def main():
 
     upload()
+    print(len(Database))
 
-    option = menu() 
+    option = menu()
+    option = int(option)
+
     while(option < 3):
         if (option == 1):
+            found = False
+            while(found == False):
+                username = input("Username: ")
+                password = input("Password: ")
 
-            username = input("Username: ")
-            password = input("Password: ")
-
-            key = hashFunction(username, password)
-            user = search(username, key)                           
+                key = hashFunction(username, password)
+                if search(username, key) != -1:
+                    user = Database[search(username, key)]
+                    found = True
+                else:
+                    print('Invalid Username or Password')                           
 
             option = transactions()
+            option = int(option)
 
             while(option < 5):
                 if(option == 1):
@@ -208,6 +230,7 @@ def main():
                         user.view_balance(a_type)
 
                 option = transactions()
+                option = int(option)
             
         
 
@@ -218,7 +241,7 @@ def main():
 
             key = hashFunction(username, password)
 
-            user = search(key)
+            user = Database[search(username, key)]
 
             while (username == user.getUsername()):
 
@@ -227,7 +250,7 @@ def main():
 
                 key = hashFunction(username, password)
 
-                user = search(key)
+                user = Database[search(username, key)]
 
             name = input("Enter your name: ")
             checking = input("Deposit: ")
@@ -237,7 +260,8 @@ def main():
 
             print("Your account has been created. ")
 
-        menu()
+        option = menu()
+        option = int(option)
 
 
 
