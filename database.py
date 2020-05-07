@@ -9,7 +9,7 @@ Database = [0 for i in range(10)]
 # converts username and password to ascii value and returns the value  
 #####################################################################
 
-def hashFunction(username, password):   
+def hashFunction(username, password): #tested  
     key = 0 
 
     for i in username:
@@ -24,7 +24,7 @@ def hashFunction(username, password):
 # uploads data from file.txt
 ####################################################################
     
-def upload():
+def upload(): #tested
 
     file = open("database.txt",'r')
     line = file.readline()
@@ -63,6 +63,7 @@ def insert(name, username, passwd, checking, savings=0):
         key =  hashFunction(username, passwd)
 
         j = 1
+
         for i,v in enumerate(Database):
             while(key == i and v != 0):
                  key = (num + j) % len(Database)
@@ -75,9 +76,9 @@ def insert(name, username, passwd, checking, savings=0):
 # delete()
 # deletes user object and frees space in Database.
 ####################################################################
-def delete(user,key):
+def delete(user,key): #tested
 
-    del user
+    del Database[key]
     Database[key] = 0
 
     overwrite()
@@ -93,7 +94,8 @@ def search():
 # menu()
 # outputs a menu for the user to chose from 
 # option is return 
-###################################################################             
+################################################################### 
+            
 def menu():
 
     print(" MENU ")
