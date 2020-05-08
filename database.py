@@ -82,22 +82,9 @@ def delete(username,key): #tested
     overwrite()
 
 ####################################################################
-#
-#
+# search()
+# searchs the hash table to find the user's position and returns it 
 ####################################################################
-
-# I was getting an error with this search function because it said b was an int instead of an Account object
-# def search(username, key):
-#     for k,b in enumerate(Database):
-#         if key == k:
-#             if username == b.getUsername():
-#                 return k
-#             else:
-#                 for k,b in enumerate(Database):             # -> while(k < len(Database))
-#                     if(username == b.getUsername()):        # -> Database[k].getUsername()
-#                         return k
-#                     elif(k == len(Database) - 1) and username != b.getUsername():
-#                         k = 0
 
 def search(username, key):
     k = key
@@ -160,9 +147,6 @@ def randomPartition(A, p, r):
     A[p] = temp
     return partition(A, p, r)
 
-
-
-
 ###################################################################
 # menu()
 # outputs a menu for the user to chose from 
@@ -177,12 +161,12 @@ def menu():
     print("2. Sign up")
     print("3. List Accounts")
     print("4. Quit")
-    print('\n')
 
     option = input("Enter an option(NUMBER ONLY): ")
-    print('\n')
+    print('\n)
 
     return option
+
 ###################################################################
 # transactions()
 # displays a list of transactions the user can 
@@ -193,12 +177,11 @@ def menu():
 def transactions():
     print(" TRANSACTIONS ")
     print("--------------")
-    print("1. Deposit. ")
+    print("1. Deposit ")
     print("2. Withdraw")
     print("3. Delete account")
     print("4. View balance")
     print("5. Log out")
-    print("\n")
 
     option = input("Enter an option: ")
 
@@ -288,6 +271,7 @@ def main():
                             print('Your current balance in this account:')
                             user.view_balance(a_type)
                             print('\n')
+
                     option = int(transactions())
             else:
                 print('\n')
