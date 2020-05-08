@@ -2,7 +2,7 @@ import models
 from encrypt_decrypt import encrypt, decrypt
 from random import randrange
 
-Database = [models.Account('void', 'void', 'void', 0, 0) for i in range(10)]
+Database = [models.Account('void','void', 'void', 'void', 0, 0) for i in range(10)]
 
 #####################################################################
 # hashfunction(): 
@@ -30,12 +30,12 @@ def upload(): #tested
     line = file.readline()
 
     while line != '':
-        if line != '0':
-            name, username, passwd, checking, savings = line.split()
+        #if line != '0':
+        first, last, username, passwd, checking, savings = line.split()
 
-            insert(name, decrypt(username), decrypt(passwd), decrypt(checking), decrypt(savings))
+        insert(first, last, username, passwd, checking, savings)
 
-            line = file.readline()
+        line = file.readline()
 
     file.close()
 
@@ -47,10 +47,11 @@ def upload(): #tested
 
 def overwrite():
 
-    file = open('database.txt', 'w')
+    file = open("output.txt", 'w')
 
     for account in Database:
-        file.write('{} {} {} {} {}\n'.format(account.user, account.username, account.password_hash, account.checking_balance, account.savings_balance))
+        file.write('{} {} {} {} {}\n'.format(account.user, decrypt(account.username), 
+        decrypt(account.password_hash), decrypt(account.checking_balance), decrypt(account.savings_balance)))
 
     file.close()
 
@@ -60,7 +61,7 @@ def overwrite():
 # the database
 #################################################################    
 
-def insert(name, username, passwd, checking, savings=0):
+def insert(first, last, username, passwd, checking, savings=0):
         key =  hashFunction(username, passwd)
         j = 1
 
@@ -70,17 +71,14 @@ def insert(name, username, passwd, checking, savings=0):
                  j = j + 1
                  
             if(key == i and v.getUsername() == 'void'):
-                Database[key] = models.Account(name, username, passwd, checking, savings)
+                Database[key] = models.Account(first, last, username, passwd, checking, savings)
 
 ####################################################################
 # delete()
 # deletes user object and frees space in Database.
 ####################################################################
-def delete(user,key): #tested
-
-    del Database[key]
-    Database[key] = models.Account('void', 'void', 'void', 0, 0)
-
+def delete(username,key): #tested
+    Database[search(username, key)] = models.Account('void', 'void', 'void', 'void', 0, 0)
     overwrite()
 
 ####################################################################
@@ -170,8 +168,10 @@ def menu():
     print("2. Sign up")
     print("3. List Accounts")
     print("4. Quit")
+    print('\n')
 
     option = input("Enter an option(NUMBER ONLY): ")
+    print('\n')
 
     return option
 ###################################################################
@@ -189,8 +189,11 @@ def transactions():
     print("3. Delete account")
     print("4. View balance")
     print("5. Quit")
+    print("\n")
 
     option = input("Enter an option: ")
+
+    print("\n")
 
     return option
 
@@ -201,83 +204,79 @@ def transactions():
 
 def main():
     upload()
-    print(len(Database))
 
-    option = menu()
-    option = int(option)
+    option = int(menu())
 
     while(option < 4):
         if (option == 1):
-            found = False
-            while(found == False):
-                username = input("Username: ")
-                password = input("Password: ")
+           
+            username = input("Username: ")
+            password = input("Password: ")
 
-                key = hashFunction(username, password)
-                if search(username, key) != -1:
-                    user = Database[search(username, key)]
-                    found = True
-                else:
-                    print('Invalid Username or Password')                           
+            key = hashFunction(username, password)
+            if search(username, key) != -1:
+                user = Database[search(username, key)]
 
-            option = transactions()
-            option = int(option)
+                option = int(transactions())
 
-            while(option < 5):
-                if(option == 1):
+                while(option < 5):
+                    if(option == 1):
 
-                    valid_type = False
-                    while(valid_type == False):
-                        a_type = input("Deposit to checking or savings? ")
-                        deposit = input("Enter amount to deposit: ")
+                        valid_type = False
+                        while(valid_type == False):
+                            a_type = input("Deposit to checking or savings? ")
+                            deposit = float(input("Enter amount to deposit: "))
 
-                        if(a_type == 'checking'):
-                            valid_type = True
-                        if(a_type == 'savings'):
-                            valid_type = True
+                            if(a_type == 'checking'):
+                                valid_type = True
+                            if(a_type == 'savings'):
+                                valid_type = True
 
                         user.deposit(a_type, deposit)
                         overwrite()
                         
 
-                elif(option == 2):
+                    elif(option == 2):
 
-                    valid_type = False
-                    while(valid_type == False):
-                        a_type = input("Withdraw from checking or savings? ")
-                        withdraw = input("Enter amount to withdraw: ")
+                        valid_type = False
+                        while(valid_type == False):
+                            a_type = input("Withdraw from checking or savings? ")
+                            withdraw = float(input("Enter amount to withdraw: "))
 
-                        if(a_type == 'checking'):
-                            valid_type = True
-                        if(a_type == 'savings'):
-                            valid_type = True
+                            if(a_type == 'checking'):
+                                valid_type = True
+                            if(a_type == 'savings'):
+                                valid_type = True
 
                         user.withdraw(a_type, withdraw)
                         overwrite()
 
-                elif(option == 3):
+                    elif(option == 3):
 
-                    delete(user, key) 
+                        delete(username, key)
+                        break
 
-                else:
+                    else:
 
-                    valid_type = False
-                    while(valid_type == False):
+                        valid_type = False
+                        while(valid_type == False):
 
-                        a_type = input("View checking or savings? ")
+                            a_type = input("View checking or savings? ")
 
-                        if(a_type == 'checking'):
-                            valid_type = True
-                        if(a_type == 'savings'):
-                            valid_type = True
+                            if(a_type == 'checking'):
+                                valid_type = True
+                            if(a_type == 'savings'):
+                                valid_type = True
 
-                        user.view_balance(a_type)
+                            user.view_balance(a_type)
+                    option = int(transactions())
+            else:
+                print('Invalid Username or Password')
 
-                option = transactions()
-                option = int(option)
             
-        
 
+                      
+                
         elif(option == 2):
 
             username = input("Enter a username: ")
@@ -296,21 +295,25 @@ def main():
 
                 user = Database[search(username, key)]
 
-            name = input("Enter your name: ")
+            first = input("Enter your first name: ")
+            last = input("Enter your last name: ")
+
             checking = input("Deposit: ")
 
-            insert(name, username, password, checking)
+            insert(first, last, username, password, checking)
             overwrite()
 
-            print("Your account has been created. ")
+            print("Your account has been created. ")                        
+
+            
+            #option = int(option)  
 
         elif(option == 3):
             sort(Database)
 
         option = int(menu())
         #option = int(option)
-    for i in range(10):
-        Database[i] = models.Account('void', 'void', 'void', 0, 0)
+main()
 
 
 

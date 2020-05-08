@@ -2,13 +2,13 @@ import encrypt_decrypt
 
 #tested all functions 
 class User:
-    def __init__(self, name, username, password):
-        self.user = name
+    def __init__(self, first, last, username, password):
+        self.user = first + ' ' + last
         self.username = username
         self.password_hash = password
 
-    def setName(self, name):
-        self.user = name 
+    def setName(self, first, last):
+        self.user = first + ' ' + last
     
     def setUsername(self, username):
         self.username = encrypt_decrypt.encrypt(username)
@@ -31,11 +31,11 @@ class User:
         print("Password: ", encrypt_decrypt.decrypt(self.password_hash))
 
 class Account(User):
-    def __init__(self, name, username, password, checking = 0.00, saving = 0.00):
+    def __init__(self, first, last, username, password, checking = 0.00, saving = 0.00):
         username = encrypt_decrypt.encrypt(username)
         password =  encrypt_decrypt.encrypt(password)
 
-        User.__init__(self, name, username, password)
+        User.__init__(self, first, last, username, password)
         self.checking_balance = encrypt_decrypt.encrypt(checking)
         self.savings_balance =  encrypt_decrypt.encrypt(saving)
        
@@ -72,10 +72,10 @@ class Account(User):
         if type == 'checking':
             self.checking_balance = encrypt_decrypt.decrypt(self.checking_balance)
 
-            if float(amount) > float(self.checking_balance):
+            if amount > float(self.checking_balance):
                 print('Insufficient Funds in Checking Account')
             else:
-                self.checking_balance = float(self.checking_balance) - float(amount)
+                self.checking_balance = float(self.checking_balance) - amount
                 print("$" + str(amount) + " withdrawn from checking account")
 
             self.checking_balance = encrypt_decrypt.encrypt(str(self.checking_balance))
@@ -83,10 +83,10 @@ class Account(User):
         elif type == 'savings':
             self.savings_balance = encrypt_decrypt.decrypt(self.savings_balance)
 
-            if float(amount) > float(self.savings_balance):
+            if amount > float(self.savings_balance):
                 print('Insufficient Funds in Savings Account')
             else:
-                self.savings_balance = float(self.savings_balance) - float(amount)
+                self.savings_balance = float(self.savings_balance) - amount
                 print("$" + str(amount) + " withdrawn from savings account")
             
             self.savings_balance = encrypt_decrypt.encrypt(str(self.savings_balance))

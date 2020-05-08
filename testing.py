@@ -1,7 +1,7 @@
 import models
 import database
 
-Database = [0 for i in range(3)]
+Database = [models.Account('void', 'void', 'void', 0, 0) for i in range(10)]
 
 # def insert(name, username, passwd, checking, savings=0): 
 #         key =  database.hashFunction(username, passwd)
@@ -18,20 +18,43 @@ Database = [0 for i in range(3)]
 #                     key = (key + j) % len(Database)
 #                     j = j + 1
 #                 Database[key] = models.Account(name, username, passwd, checking, savings)
- 
+ def upload(): #tested
+
+    file = open("database.txt",'r')
+    line = file.readline()
+
+    while line != '':
+        if 
+            name, username, passwd, checking = line.split()
+
+            insert(name, username, passwd, checking)
+
+            line = file.readline()
+
+    file.close()
+
+def hashFunction(username, password): #tested  
+    key = 0 
+
+    for i in username:
+        key = key + ord(i)
+    for i in password:
+        key = key + ord(i)
+        
+    return key % len(Database)
+
                 
 def insert(name, username, passwd, checking, savings=0):
-    key =  database.hashFunction(username, passwd)
+        key =  hashFunction(username, passwd)
+        j = 1
 
-    j = 1
-
-    for i,v in enumerate(Database):
-        while(key == i and v != 0):
-            key = (key + j) % len(Database)
-            j = j + 1
+        for i,v in enumerate(Database):
+            while(key == i and v.getUsername() != 'void'):
+                 key = (key + j) % len(Database)
+                 j = j + 1
                  
-            if(key == i and v == 0):
-                Database[key] = models.Account(name, username, passwd, checking, savings)  
+            if(key == i and v.getUsername() == 'void'):
+                Database[key] = models.Account(name, username, passwd, checking, savings)
  
 
 def delete(position):
@@ -40,14 +63,16 @@ def delete(position):
     Database[position] = 0
 
 def main():
-
-    Database[0] = models.Account('Sabrina Lugo', 'salugo721','Sweet1', '100.00')
-    Database[1] = models.Account('Dominic Gutierrez', 'dom123', 'Liljoker3','350.00')
-    Database[2] = models.Account('Kenneth Lu', 'ken454','2coo4u', '230.0')
+    upload()
+    # Database[0] = models.Account('Sabrina Lugo', 'salugo721','Sweet1', '100.00')
+    # Database[1] = models.Account('Dominic Gutierrez', 'dom123', 'Liljoker3','350.00')
+    # Database[2] = models.Account('Kenneth Lu', 'ken454','2coo4u', '230.0')
 
     #position = int(input("Enter a position: "))
 
     insert('Ron Lencevicus', 'RonL546', 'Babycakes1', '324.0')
+    insert('Sabrina Lugo', 'salugo721','Sweet1', '100.00')
+    insert('Dominic Gutierrez', 'dom123', 'Liljoker3','350.00')
 
     print('\n')
 
@@ -61,7 +86,13 @@ def main():
     #Database[position].printInfor()
     #print(Database[position])
 
-main()
+string = "This is a string."
+
+for line in file: 
+    list(line.split())
+
+    if
+
 
 
 
