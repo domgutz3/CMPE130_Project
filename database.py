@@ -243,14 +243,9 @@ def main():
                             if(a_type == 'savings'):
                                 valid_type = True
 
-<<<<<<< HEAD
-                            user.deposit(a_type, deposit)
-                            
-=======
                         user.deposit(a_type, deposit)
                         overwrite()
                         
->>>>>>> 484caac2ad6039a71e76d0988e4df693082e61bd
 
                     elif(option == 2):
 
@@ -264,12 +259,8 @@ def main():
                             if(a_type == 'savings'):
                                 valid_type = True
 
-<<<<<<< HEAD
-                            user.withdraw(a_type, withdraw)
-=======
                         user.withdraw(a_type, withdraw)
                         overwrite()
->>>>>>> 484caac2ad6039a71e76d0988e4df693082e61bd
 
                     elif(option == 3):
 
