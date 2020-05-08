@@ -168,7 +168,8 @@ def menu():
     print("------")
     print("1. Login")
     print("2. Sign up")
-    print("3. Quit")
+    print("3. List Accounts")
+    print("4. Quit")
 
     option = input("Enter an option(NUMBER ONLY): ")
 
@@ -199,14 +200,13 @@ def transactions():
 ####################################################################
 
 def main():
-    Database = [models.Account('void', 'void', 'void', 0, 0) for i in range(10)]
     upload()
     print(len(Database))
 
     option = menu()
     option = int(option)
 
-    while(option < 3):
+    while(option < 4):
         if (option == 1):
             found = False
             while(found == False):
@@ -304,8 +304,13 @@ def main():
 
             print("Your account has been created. ")
 
+        elif(option == 3):
+            sort(Database)
+
         option = int(menu())
         #option = int(option)
+    for i in range(10):
+        Database[i] = models.Account('void', 'void', 'void', 0, 0)
 
 
 
