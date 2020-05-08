@@ -1,7 +1,6 @@
 import models
 from encrypt_decrypt import encrypt, decrypt
-
-#delete, and search need to be created 
+from random import randrange
 
 Database = [models.Account('void','void', 'void', 'void', 0, 0) for i in range(10)]
 
@@ -56,11 +55,11 @@ def overwrite():
 
     file.close()
 
-  #################################################################
-  # insert()
-  # inserts a user with their information inside 
-  # the database
-  #################################################################    
+#################################################################
+# insert()
+# inserts a user with their information inside 
+# the database
+#################################################################    
 
 def insert(first, last, username, passwd, checking, savings=0):
         key =  hashFunction(username, passwd)
@@ -119,7 +118,52 @@ def search(username, key):
             # user not found
             return -1
     return key
-            
+
+###################################################################
+# sort()
+# outputs a list of all accounts, sorted by largest total balance
+# used by bank owner to determine most valuable accounts
+################################################################### 
+
+def sort(A):
+    list = A
+    randomQuickSort(list, 0, len(list) - 1)
+    for item in list:
+        print(item.getUser() + ', Balance: ' + str(item.getTotalBalance()))
+
+def randomQuickSort(A, p, r):
+    if p < r:
+        q = randomPartition(A, p, r)
+        randomQuickSort(A, p, q)
+        randomQuickSort(A, q + 1, r)
+
+def partition(A, p, r):
+    x = A[p].getTotalBalance()
+    i = p - 1
+    j = r + 1
+    while(True):
+        j = j - 1
+        while A[j].getTotalBalance() > x:
+            j = j - 1
+        i = i + 1
+        while A[i].getTotalBalance() < x:
+            i = i + 1
+        if i < j:
+            temp = A[i]
+            A[i] = A[j]
+            A[j] = temp
+        else:
+            return j
+
+def randomPartition(A, p, r):
+    i = randrange(p, r)
+    temp = A[i]
+    A[i] = A[p]
+    A[p] = temp
+    return partition(A, p, r)
+
+
+
 
 ###################################################################
 # menu()
@@ -169,7 +213,7 @@ def transactions():
 ####################################################################
 
 def main():
-
+    Database = [models.Account('void', 'void', 'void', 0, 0) for i in range(10)]
     upload()
 
     option = int(menu())
@@ -199,8 +243,14 @@ def main():
                             if(a_type == 'savings'):
                                 valid_type = True
 
+<<<<<<< HEAD
                             user.deposit(a_type, deposit)
                             
+=======
+                        user.deposit(a_type, deposit)
+                        overwrite()
+                        
+>>>>>>> 484caac2ad6039a71e76d0988e4df693082e61bd
 
                     elif(option == 2):
 
@@ -214,7 +264,12 @@ def main():
                             if(a_type == 'savings'):
                                 valid_type = True
 
+<<<<<<< HEAD
                             user.withdraw(a_type, withdraw)
+=======
+                        user.withdraw(a_type, withdraw)
+                        overwrite()
+>>>>>>> 484caac2ad6039a71e76d0988e4df693082e61bd
 
                     elif(option == 3):
 

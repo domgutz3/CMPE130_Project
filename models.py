@@ -50,17 +50,20 @@ class Account(User):
     
     def getSavings(self):
         return encrypt_decrypt.decrypt(self.savings_balance)
+    
+    def getTotalBalance(self):
+        return float(encrypt_decrypt.decrypt(self.checking_balance)) + float(encrypt_decrypt.decrypt(self.savings_balance))
 
     def deposit(self, type, amount):
         if type == 'checking':
             self.checking_balance = encrypt_decrypt.decrypt(self.checking_balance)
             self.checking_balance = float(self.checking_balance) + float(amount)
-            self.checking_balance = encrypt_decrypt.encrypt(self.checking_balance)
+            self.checking_balance = encrypt_decrypt.encrypt(str(self.checking_balance))
 
         elif type == 'savings':
             self.savings_balance = encrypt_decrypt.decrypt(self.savings_balance)
             self.savings_balance = float(self.savings_balance) + float(amount)
-            self.savings_balance = encrypt_decrypt.encrypt(self.savings_balance)
+            self.savings_balance = encrypt_decrypt.encrypt(str(self.savings_balance))
 
         else:
             print('Invalid Balance Type')
@@ -75,7 +78,7 @@ class Account(User):
                 self.checking_balance = float(self.checking_balance) - amount
                 print("$" + str(amount) + " withdrawn from checking account")
 
-            self.checking_balance = encrypt_decrypt.encrypt(self.checking_balance)
+            self.checking_balance = encrypt_decrypt.encrypt(str(self.checking_balance))
 
         elif type == 'savings':
             self.savings_balance = encrypt_decrypt.decrypt(self.savings_balance)
@@ -86,7 +89,7 @@ class Account(User):
                 self.savings_balance = float(self.savings_balance) - amount
                 print("$" + str(amount) + " withdrawn from savings account")
             
-            self.savings_balance = encrypt_decrypt.encrypt(self.savings_balance)
+            self.savings_balance = encrypt_decrypt.encrypt(str(self.savings_balance))
 
         else:
             print('Invalid Balance Type')
