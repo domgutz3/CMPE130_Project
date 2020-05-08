@@ -33,7 +33,7 @@ def upload(): #tested
         #if line != '0':
         first, last, username, passwd, checking, savings = line.split()
 
-        insert(first, last, username, passwd, checking, savings)
+        insert(first, last, decrypt(username), decrypt(passwd), decrypt(checking), decrypt(savings))
 
         line = file.readline()
 
@@ -47,11 +47,11 @@ def upload(): #tested
 
 def overwrite():
 
-    file = open("output.txt", 'w')
+    file = open("database.txt", 'w')
 
     for account in Database:
-        file.write('{} {} {} {} {}\n'.format(account.user, decrypt(account.username), 
-        decrypt(account.password_hash), decrypt(account.checking_balance), decrypt(account.savings_balance)))
+        file.write('{} {} {} {} {}\n'.format(account.user, account.username, 
+        account.password_hash, account.checking_balance, account.savings_balance))
 
     file.close()
 
@@ -115,10 +115,19 @@ def search(username, key):
 ################################################################### 
 
 def sort(A):
-    list = A
+    list = [models.Account('void','void', 'void', 'void', 0, 0) for i in range(10)]
+
+    for i in range(len(list)):
+        list[i] = Database[i]
+
     randomQuickSort(list, 0, len(list) - 1)
+
+    print("Current Accounts (in increasing order):")
+    print("---------------------------------------")
     for item in list:
-        print(item.getUser() + ', Balance: ' + str(item.getTotalBalance()))
+        if item.getUsername() != 'void':
+            print(item.getUser() + ', Total Balance: ' + str(item.getTotalBalance()))
+    print("---------------------------------------")
 
 def randomQuickSort(A, p, r):
     if p < r:
@@ -188,7 +197,7 @@ def transactions():
     print("2. Withdraw")
     print("3. Delete account")
     print("4. View balance")
-    print("5. Quit")
+    print("5. Log out")
     print("\n")
 
     option = input("Enter an option: ")
@@ -216,6 +225,9 @@ def main():
             key = hashFunction(username, password)
             if search(username, key) != -1:
                 user = Database[search(username, key)]
+                print('\n')
+                print('Welcome, ' + user.getUser() + '!')
+                print('\n')
 
                 option = int(transactions())
 
@@ -226,13 +238,15 @@ def main():
                         while(valid_type == False):
                             a_type = input("Deposit to checking or savings? ")
                             deposit = float(input("Enter amount to deposit: "))
+                            print('\n')
 
                             if(a_type == 'checking'):
                                 valid_type = True
                             if(a_type == 'savings'):
                                 valid_type = True
 
-                        user.deposit(a_type, deposit)
+                            user.deposit(a_type, deposit) # It's okay for this to be in the loop since the function handles errors internally
+                            print('\n')
                         overwrite()
                         
 
@@ -242,13 +256,15 @@ def main():
                         while(valid_type == False):
                             a_type = input("Withdraw from checking or savings? ")
                             withdraw = float(input("Enter amount to withdraw: "))
+                            print('\n')
 
                             if(a_type == 'checking'):
                                 valid_type = True
                             if(a_type == 'savings'):
                                 valid_type = True
 
-                        user.withdraw(a_type, withdraw)
+                            user.withdraw(a_type, withdraw)
+                            print('\n')
                         overwrite()
 
                     elif(option == 3):
@@ -262,16 +278,21 @@ def main():
                         while(valid_type == False):
 
                             a_type = input("View checking or savings? ")
+                            print('\n')
 
                             if(a_type == 'checking'):
                                 valid_type = True
                             if(a_type == 'savings'):
                                 valid_type = True
-
+                            
+                            print('Your current balance in this account:')
                             user.view_balance(a_type)
+                            print('\n')
                     option = int(transactions())
             else:
+                print('\n')
                 print('Invalid Username or Password')
+                print('\n')
 
             
 
@@ -309,7 +330,15 @@ def main():
             #option = int(option)  
 
         elif(option == 3):
-            sort(Database)
+            admin_pword = encrypt(input("Admin Password: "))
+            if (admin_pword == '#r)b3b0VB/V[B'):
+                print('\n')
+                sort(Database)
+                print('\n')
+            else:
+                print('\n')
+                print("Password Incorrect")
+                print('\n')
 
         option = int(menu())
         #option = int(option)
