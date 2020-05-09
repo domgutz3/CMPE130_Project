@@ -65,13 +65,16 @@ def insert(first, last, username, passwd, checking, savings=0):
         key =  hashFunction(username, passwd)
         j = 1
 
-        for i,v in enumerate(Database):
-            while(key == i and v.getUsername() != 'void'):
+        if(Database[key].getUsername() == 'void'):
+                Database[key] = models.Account(first, last, username, passwd, checking, savings)
+        else:
+            while(Database[key].getUsername() != 'void'):
                  key = (key + j) % len(Database)
                  j = j + 1
+            Database[key] = models.Account(first, last, username, passwd, checking, savings)
+        
+        overwrite()
                  
-            if(key == i and v.getUsername() == 'void'):
-                Database[key] = models.Account(first, last, username, passwd, checking, savings)
 
 ####################################################################
 # delete()
@@ -163,7 +166,7 @@ def menu():
     print("4. Quit")
 
     option = input("Enter an option(NUMBER ONLY): ")
-    print('\n)
+    print('\n')
 
     return option
 
@@ -291,19 +294,20 @@ def main():
 
             user = Database[search(username, key)]
 
-            while (username == user.getUsername()):
+            if (username == user.getUsername()):
 
                 print("Username is not available.")
                 username = input("Enter another username: ")
 
-                key = hashFunction(username, password)
+                # key = hashFunction(username, password)
 
-                user = Database[search(username, key)]
+                # user = Database[search(username, key)]
+            else: 
 
-            first = input("Enter your first name: ")
-            last = input("Enter your last name: ")
+                first = input("Enter your first name: ")
+                last = input("Enter your last name: ")
 
-            checking = input("Deposit: ")
+                checking = input("Deposit: ")
 
             insert(first, last, username, password, checking)
             overwrite()

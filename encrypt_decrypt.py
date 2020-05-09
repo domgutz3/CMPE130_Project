@@ -17,7 +17,7 @@ def encrypt(account):
 
 
     for line in str(account):
-        encryptAcct = encryptAcct + firstKey.get(line, ' ')
+        encryptAcct = encryptAcct + firstKey.get(line, encryptAcct)
 
     return encryptAcct
 

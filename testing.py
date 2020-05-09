@@ -18,20 +18,6 @@ Database = [models.Account('void', 'void', 'void', 0, 0) for i in range(10)]
 #                     key = (key + j) % len(Database)
 #                     j = j + 1
 #                 Database[key] = models.Account(name, username, passwd, checking, savings)
- def upload(): #tested
-
-    file = open("database.txt",'r')
-    line = file.readline()
-
-    while line != '':
-        if 
-            name, username, passwd, checking = line.split()
-
-            insert(name, username, passwd, checking)
-
-            line = file.readline()
-
-    file.close()
 
 def hashFunction(username, password): #tested  
     key = 0 
@@ -91,7 +77,7 @@ string = "This is a string."
 for line in file: 
     list(line.split())
 
-    if
+
 
 
 
